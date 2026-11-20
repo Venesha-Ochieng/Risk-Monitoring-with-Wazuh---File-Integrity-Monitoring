@@ -43,7 +43,7 @@ curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --dearmor -o /us
 ```bash
 curl -sO https://packages.wazuh.com/4.12/wazuh-install.sh && sudo bash ./wazuh-install.sh -a -i
 ```
-![Step 1.2](images/1.2.png)
+![Step 1.2](1.2.png)
 
 - `-a`: Installs **all** components.
 - `-i`: Runs in **interactive** mode (follow any on-screen prompts).
@@ -58,7 +58,7 @@ sudo systemctl stop wazuh-manager
 sudo systemctl start wazuh-manager
 sudo systemctl status wazuh-manager
 ```
-![Step 1.3](images/1.3.png)
+![Step 1.3](1.3.png)
 
 # Part 2: Accessing the Wazuh Dashboard
 
@@ -67,20 +67,21 @@ sudo systemctl status wazuh-manager
 ```bash
 ip addr show
 ```
-![Step 2.1](images/2.1.png)
+![Step 2.1](2.1.png)
 
 ### 2.2 Open a web browser and navigate to:
 
 ```text
 https://<UBUNTU_VM_IP_ADDRESS>
 ```
-![Step 2.2](images/2.2.png)
+![Step 2.2](2.2.png)
 
 ### 2.3 Accept the browser security warning
 (This is expected in a lab environment).
 
 Log in using the credentials provided at the end of the installation script (default username is `admin`).
-![Step 2.3](images/2.3.png)
+
+![Step 2.3](2.3.png)
 
 **GRC Note:** This dashboard serves as your **Risk & Control Monitoring Console**. It provides the evidence needed for compliance audits and ongoing risk assessments.
 
@@ -93,7 +94,7 @@ Log in using the credentials provided at the end of the installation script (def
    ```
 
 2. Run the MSI file and install it with the default settings.
-![Step 3](images/3.png)
+![Step 3](3.png)
 
 # Part 4: Agent-Manager Registration
 ## 4.1 Generate Agent Key on Manager
@@ -107,7 +108,7 @@ sudo /var/ossec/bin/manage_agents
 - For the IP address, you can leave it as **any**.
 - Confirm and then press **E** to **Extract the key**.
 - **Copy the generated key.**
-![Step 4.1](images/4.1.png)
+![Step 4.1](4.1.png)
 
 ## 4.2 Apply Key in the Windows Agent
 
@@ -116,16 +117,16 @@ sudo /var/ossec/bin/manage_agents
 3. Paste the key into the **Agent key** field.
 4. In the **Manager address** field, enter the IP address of your **Ubuntu VM**.
 5. Click **Apply** and then **Restart**.
-![Step 4.2](images/4.2.png)
+![Step 4.2](4.2..png)
 
 ### Verification
 
 Go to the **Wazuh Dashboard** → **Agents**.
 
 You should soon see your agent with a green **Active** status.
-![Step 4.2.](images/4.2..png)
+![Step 4.2.](4.2..png)
 
-![Step 4.2..](images/4.2...png)
+![Step 4.2..](4.2..png)
 
 # Part 5: Implementing a Detective Control (File Integrity Monitoring)
 
