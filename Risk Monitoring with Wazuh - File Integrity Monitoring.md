@@ -36,7 +36,7 @@ You have selected the open-source **Wazuh** platform to fulfill this requirement
 ```bash
 curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --dearmor -o /usr/share/keyrings/wazuh-archive-keyring.gpg
 ```
-![Step 1.1](images/1.1.png)
+![Step 1.1](1.1.png)
 
 ### 1.2 Download and Execute Installation Script
 
