@@ -149,10 +149,12 @@ We will now configure the **detective control** to monitor for the identified ri
 ```xml
 <directories realtime="yes">C:\Users\AMINU IDRIS\SensitiveFiles</directories>
 ```
+![Step 5.1](5.1.png)
 
 ## 5.2 Restart the Agent
 
 Restart the Wazuh agent from the **Wazuh Agent Manager** GUI or via **services.msc**.
+![Step 5.2](5.2.png)
 
 # Part 6: Risk Monitoring & Control Verification
 
@@ -165,14 +167,20 @@ Create the following folder on your Windows machine:
 ```text
 C:\Users\abc\SensitiveFiles
 ```
+![Step 6.1](6.1.png)
 
 ## 6.2 Simulate a Risk Event
 
 Perform these actions in the **SensitiveFiles** folder to simulate unauthorized activity:
 
 - Create a new file (**Q4_Financial_Forecast.docx**).
+![Step 6.2](6.2.png)
+
 - Modify the file by adding text.
+![Step 6.2.](6.2..png)
+
 - Delete the file.
+![Step 6.2..](6.2...png)
 
 ## 6.3 Monitor Control Effectiveness in the Dashboard
 
@@ -193,3 +201,5 @@ to see only **File Integrity Monitoring** alerts.
   - File checksums
 
 These events provide evidence that the detective control is operating effectively and generating an auditable trail of file activity within the monitored **SensitiveFiles** directory.
+
+![Step 6.3](6.3.png)
