@@ -204,183 +204,275 @@ These events provide evidence that the detective control is operating effectivel
 
 ![Step 6.3](6.3.png)
 
-## 12.1 First-Year Risk Treatment Cost Comparison
+# GRC Workshop & Analysis Questions
 
-The first-year cost is calculated as:
+## 1. Risk Identification & Analysis
 
-**First-Year Cost = Setup Cost + Labour Cost + Annual Recurring Cost**
+### 1.1 What is the potential business impact (e.g., financial, reputational, operational) if this risk were realized?
 
-| Cost Component | Option A: Hardening | Option B: Managed Backup | Option C: TLS |
-|----------------|--------------------|--------------------------|--------------|
-| Setup cost | $0 | $120 | $0 |
-| Labour hours | 4 | 0 (not specified) | 3 |
-| Labour rate | $25/hr | Not specified | $25/hr |
-| Labour cost | $100 | $0 assumed | $75 |
-| Annual maintenance / recurring | $50 | $240 | $25 |
-| Total first-year cost | $150 | $360 | $100 |
+Unauthorized modification or deletion of sensitive financial documents presents significant financial, operational, reputational and compliance risks to an organization.
 
-### Cost Calculations
+#### Financial Impact
 
-**Option A – Hardening**
+Unauthorized changes to financial forecasts may result in inaccurate budgets, misleading financial projections and poor investment decisions. Management could allocate resources based on manipulated figures, potentially resulting in financial losses, fraud or misappropriation of organizational funds.
 
-(4 × $25) + $50 = $150
+#### Operational Impact
 
-**Option B – Managed Backup**
+Modification or deletion of critical financial records can disrupt budgeting, financial reporting and decision-making processes. Employees may spend considerable time investigating discrepancies, restoring documents and verifying the accuracy of financial information, leading to reduced productivity and operational delays.
 
-$120 + (12 × $20) = $360
+#### Reputational Impact
 
-**Option C – TLS Deployment**
+If stakeholders discover that financial information has been compromised, they may lose confidence in the organization's ability to safeguard sensitive information. This can damage relationships with investors, customers, business partners and regulators.
 
-(3 × $25) + $25 = $100
+#### Regulatory and Compliance Impact
 
-### First-Year Security Control Costs
+Unauthorized alteration of financial records may compromise the integrity of financial reporting and lead to non-compliance with applicable regulatory requirements, including internal control obligations under the Sarbanes-Oxley Act (SOX), where applicable.
 
-#### Recommended Control Combination
+#### Risk Assessment
 
-Northbridge Services should adopt Options A + B + C as a proposed layered treatment strategy, subject to management approval.
-
-| Option | First-Year Cost | Justification |
-|----------|---------------|--------------|
-| A – Hardening | $150 | Maintains reduced attack surface, archive restrictions and controlled network access. |
-| B – Managed Backup | $360 | Addresses the limitations of same-host backups through separately protected recovery arrangements. |
-| C – TLS Deployment | $100 | Reduces the remaining risk of HTTP traffic interception and modification. |
-| Combined investment | $610 | Addresses preventive, corrective and communication-security weaknesses. |
-
-Option A's technical controls have been tested in the laboratory. Option B remains a fictional service proposal, and Option C has not been implemented or validated. Therefore, the combined investment is a recommendation, not an expenditure already incurred. 【1-138756】
-
-### Excluded Costs
-
-The cost estimates exclude additional hardware, storage expansion, system downtime, staff training, monitoring software, vendor due diligence, contract management, incident response, backup-storage growth, certificate-related expenses and other operational costs not specified in the assignment.
-
-Consequently, the $610 estimate represents only the fictional first-year costs of the three stated options. 【1-138756】
+Given the sensitivity of financial documents, the risk can be classified as Medium to High, consistent with the scenario, depending on the likelihood of unauthorized modification and the potential business impact.
 
 ---
 
-## 12.2 Illustrative Backup Cost-Benefit Analysis
+### 1.2 Based on the alerts you generated, how does this control help in quantifying the risk (e.g., frequency of events)?
 
-This analysis applies only to the separate backup scenario prescribed in the assignment.
+File Integrity Monitoring helps quantify risk by generating measurable security events whenever monitored files are created, modified or deleted.
 
-### Financial Assumptions
+During the practical lab, the Wazuh Threat Hunting dashboard displayed the following file integrity alerts:
 
-| Parameter | Assumed Value |
-|------------|--------------|
-| Annual Rate of Occurrence (ARO) | 0.2 events/year |
-| Baseline loss per event (SLE) | $5,000 |
-| Residual loss per event after tested recovery | $1,000 |
-| Option B first-year cost | $360 |
+| Rule ID | Alert Description | Severity Level |
+|----------|------------------|----------------|
+| 554 | File added to the system | 5 |
+| 550 | Integrity checksum changed | 7 |
+| 553 | File deleted | 7 |
 
-These figures are hypothetical. The successful Step 10 recovery test does not independently establish the assumed incident frequency, financial losses or expected savings. 【1-138756】
+These alerts demonstrate Wazuh's ability to detect different categories of file changes. The exact monitored financial document associated with each alert must be confirmed from its event details.
 
-### 12.2.1 Baseline Annualised Loss Expectancy
+The control supports risk quantification through:
 
-**Baseline ALE = ARO × Baseline SLE**
+- **Event frequency:** Counting file creation, modification and deletion events over a defined period.
+- **Event severity:** Categorizing detected changes according to their assigned Wazuh alert levels.
+- **Trend analysis:** Comparing the number of unexpected changes across days, weeks or months.
+- **Response performance:** Measuring how quickly suspicious file changes are investigated and resolved.
 
-0.2 × $5,000 = **$1,000**
-
-### 12.2.2 Residual Annualised Loss Expectancy
-
-**Residual ALE = ARO × Residual SLE**
-
-0.2 × $1,000 = **$200**
-
-### 12.2.3 Annual Expected Benefit
-
-**Annual Benefit = Baseline ALE − Residual ALE**
-
-$1,000 − $200 = **$800**
-
-### 12.2.4 First-Year Net Benefit
-
-**Net Benefit = Annual Benefit − Option B Cost**
-
-$800 − $360 = **$440**
-
-The scenario indicates that the assumed annual benefit of $800 exceeds the $360 first-year cost of Option B, producing a positive illustrative net benefit of $440.
-
-However, this result depends entirely on the prescribed assumptions. Managed backup implementation and its financial benefits have not been validated in the laboratory.
-
-No financial benefit is assigned to Options A or C because the assignment does not provide separate loss-reduction estimates for those controls. Overlapping control benefits must not be added together. 【1-138756】
+**GRC Significance:** Wazuh provides measurable indicators that support ongoing risk assessment, risk prioritization and management reporting. These indicators can inform likelihood estimates but do not independently establish financial loss exposure.
 
 ---
 
-## 12.3 Residual Risk Reassessment (R1–R4)
+## 2. Control Evaluation & Treatment
 
-Following the technical risk treatment activities completed in Steps 6–10, the four baseline risks were reassessed using the observed control effectiveness.
+The implemented FIM is a **detective control**.
 
-Residual risk represents the exposure remaining after implemented controls have been considered.
+### 2.1 What would be a complementary preventive control for this same risk?
+
+A suitable preventive control would be **Role-Based Access Control (RBAC), supported by the principle of least privilege**.
+
+RBAC restricts access to sensitive financial documents according to employees' assigned responsibilities.
+
+For example, finance managers may be authorized to modify financial forecasts, while other employees receive read-only access.
+
+The organization should implement the following measures:
+
+- Restrict modification and deletion permissions to authorized finance personnel.
+- Apply least-privilege access through Windows NTFS file permissions.
+- Require multifactor authentication where supported for access to relevant systems.
+- Conduct periodic access reviews to remove unnecessary privileges.
+- Require approval for changes to critical financial documents.
+
+#### Relationship Between Controls
+
+| Control Type | Example | Purpose |
+|-------------|---------|---------|
+| Preventive | RBAC and NTFS permissions | Restricts unauthorized changes |
+| Detective | Wazuh File Integrity Monitoring | Identifies and records file changes |
+| Corrective | Restore an approved document version | Recovers file integrity following an incident |
+
+Combining these controls establishes a layered security approach that reduces the likelihood of unauthorized modifications while ensuring suspicious activity can be detected and addressed.
+
+---
+
+### 2.2 Explain a situation where the alert from this detective control would trigger a corrective control (a response action).
+
+Consider a scenario where an unauthorized employee modifies **Q4_Financial_Forecast.docx** to manipulate projected revenue figures.
+
+The Wazuh Agent detects the change and generates an integrity alert under **Rule ID 550**.
+
+The security or GRC team investigates the alert by examining the affected file path, timestamp, checksum information and available user activity records.
+
+If the modification is confirmed to be unauthorized, the organization initiates corrective actions:
+
+- **Incident investigation:** Determine who modified the file, when the change occurred and whether it was authorized.
+- **Containment:** Temporarily restrict the affected account's modification permissions if misuse is suspected.
+- **File restoration:** Restore the financial document from a verified backup or approved version.
+- **Access review:** Assess and correct excessive permissions that enabled the modification.
+- **Control improvement:** Review the incident's root cause and strengthen preventive controls.
+- **Verification:** Confirm that the restored document matches the approved version and that monitoring remains operational.
+
+**GRC Significance:** File Integrity Monitoring provides the detection mechanism, while incident response and restoration procedures provide corrective action. Together, these controls support effective risk treatment and continuous improvement.
+
+---
+
+## 3. Risk Monitoring & Reporting
+
+### 3.1 If you had to report on the operational effectiveness of this File Integrity Monitoring control to a manager, what three key metrics would you pull from the Wazuh dashboard?
+
+The following three metrics would provide management with meaningful information about the operational effectiveness of the File Integrity Monitoring control.
+
+| KPI / KRI | Description | Management Significance |
+|------------|------------|------------------------|
+| File Integrity Event Frequency | Number of file additions, modifications and deletions detected during a defined period | Measures change activity and identifies unusual trends |
+| Unauthorized Change Detection Rate | Percentage of confirmed unauthorized file changes that generated File Integrity Monitoring alerts | Evaluates whether the detective control is identifying relevant security events |
+| Mean Time to Respond (MTTR) | Average time between detection of an unauthorized modification and completion of the response | Evaluates the efficiency of investigation and corrective action |
+
+#### Metric 1 - File Integrity Event Frequency
+
+Wazuh records file changes through alerts such as Rule 554 (file added), Rule 550 (integrity checksum changed) and Rule 553 (file deleted).
+
+Monitoring these alerts enables management to identify unusual increases in file modification activity.
+
+#### Metric 2 - Unauthorized Change Detection Rate
+
+This measures the proportion of independently verified unauthorized file changes that were detected by the File Integrity Monitoring control.
 
 \[
-\text{Residual Risk Score}=\text{Residual Likelihood}\times\text{Residual Impact}
+\text{Detection Rate} =
+\frac{\text{Detected Unauthorized Changes}}
+{\text{Total Verified Unauthorized Changes}}
+\times 100
 \]
 
-The residual scores below are proposed qualitative assessments based on the available evidence. They are not automatically reduced simply because a control was configured.
+The denominator requires an independent source of verified changes, such as controlled tests or incident investigations. Wazuh alerts alone cannot establish this metric.
 
-### 12.3.1 Residual Risk Register
+#### Metric 3 - Mean Time to Respond
 
-| Risk | Baseline Risk | Residual Likelihood | Residual Impact | Residual Score | Rating |
-|--------|--------------|--------------------|----------------|---------------|---------|
-| R1 - Unnecessary Legacy Service | 16 - High | 1 | 4 | 4 | Low |
-| R2 - Exposed Archive | 16 - High | 2 | 4 | 8 | Medium |
-| R3 - Unauthorised Network Access | 12 - High | 2 | 4 | 8 | Medium |
-| R4 - Loss of Portal Content | 12 - High | 3 | 3 | 9 | Medium |
+This measures how quickly the organization responds to confirmed unauthorized file modifications.
 
-### 12.3.2 Residual Risk Evidence, Ownership and Review Triggers
+\[
+\text{MTTR} =
+\frac{\text{Total Response Time}}
+{\text{Number of Resolved Incidents}}
+\]
 
-| Risk | Technical Evidence and Control Effectiveness | Treatment Owner | Review Trigger |
-|--------|--------------------------------------------|----------------|---------------|
-| R1 | grc-legacy.service confirmed inactive and disabled; Nmap confirmed TCP 8080 closed while TCP 80 remained open. **Verified at test time.** | IT Infrastructure / Server Administrator | Legacy service reactivation, unexpected reopening of TCP 8080 or unauthorised configuration changes. |
-| R2 | Archive relocated; Nginx syntax passed; direct dummy-file request HTTP 403. Specific post-treatment /archive/ check not retained in reviewed evidence. **Partially verified.** | Web Administrator / Asset Owner | Archive becomes accessible, HTTP 200 appears for a protected path or permissions drift. |
-| R3 | Approved HTTP 200; UFW BLOCK log SRC=192.168.224.131 DST=192.168.224.133 DPT=80. **Verified for tested source.** | Network Security Administrator | Unexpected open ports, firewall-rule changes or successful access from an unauthorised source. |
-| R4 | Local restore command completed; SHA-256 OK; restored HTTP 200. Full recovery start time and failed-service response not retained in reviewed evidence. **Partially verified.** | Backup Administrator | Failed recovery test, integrity mismatch, host failure, backup loss or unacceptable recovery delay. |
+Wazuh provides alert timestamps, while incident management records supply response and resolution times.
 
-### 12.3.3 Residual Risk Analysis
-
-#### R1 - Unnecessary Legacy Service: Low (4)
-
-The legacy endpoint was successfully disabled, and the post-treatment scan confirmed TCP port 8080 was closed. The likelihood is provisionally reduced from 4 to 1, while the potential impact remains 4 because the service could be reintroduced through configuration changes. Continued monitoring is necessary to detect reactivation.
-
-#### R2 - Exposed Archive: Medium (8)
-
-Moving archived files outside the Nginx web root, restricting permissions and denying access to the previous URL substantially reduces the likelihood of unauthorised disclosure. The residual likelihood is provisionally reduced to 2, while impact remains 4. Final validation should retain a direct `/archive/` HTTP 403 response.
-
-#### R3 - Unauthorised Network Access: Medium (8)
-
-UFW source-IP restrictions reduce exposure to unauthorised network clients. The successful approved request and corresponding firewall block logs support the likelihood reduction to 2. Impact remains 4 because successful exploitation through an authorised connection or misconfiguration could still affect the server.
-
-#### R4 - Loss of Portal Content: Medium (9)
-
-The successful SHA-256 check and restored HTTP 200 response demonstrate useful file-level recovery capability. Nevertheless, the backup is stored on the same host, and complete host-loss recovery has not been demonstrated. The residual risk remains Medium and requires continued treatment through backup enhancement and recovery validation. 【1-138756】
+**Practical Observation:** During the lab, the dashboard displayed file creation, checksum modification and deletion alerts. This demonstrates File Integrity Monitoring event generation, but an effectiveness percentage and MTTR cannot be calculated without additional test coverage and response records.
 
 ---
 
-## 12.4 Control Effectiveness and Treatment Decision
+### 3.2 How does centralizing this monitoring data, as opposed to checking logs on each individual computer, improve the governance and auditability of the risk management program?
 
-The evidence demonstrates that several implemented controls achieved their immediate technical objectives. However, their longer-term effectiveness requires monitoring and periodic testing.
+Centralized monitoring improves governance, accountability, operational efficiency and auditability by consolidating security events from multiple endpoints into a single monitoring platform.
 
-The following treatment decisions are recommended:
+- **Improved Security Visibility:** Wazuh enables security teams to monitor multiple workstations through one dashboard rather than manually reviewing individual device logs.
+- **Consistent Control Monitoring:** Centralized collection supports consistent alert classification, event analysis and security reporting across monitored endpoints.
+- **Enhanced Accountability:** Events are associated with monitored agents, timestamps, affected file paths and detection rules. These details support investigations and the identification of responsible systems.
+- **Improved Auditability:** Centralized records provide evidence that security monitoring controls are operating. Auditors can review historical alerts, monitoring coverage and relevant investigations without accessing every endpoint individually.
+- **Faster Incident Identification:** Security analysts can identify suspicious file changes and prioritize investigations using severity levels and event patterns.
+- **Governance Reporting:** Aggregated security metrics allow management and the risk committee to evaluate trends, identify control weaknesses and make informed risk treatment decisions.
 
-- **Risk avoidance:** Retain the disabled legacy endpoint and monitor for configuration drift.
-- **Risk mitigation:** Maintain archive restrictions and UFW controls, with periodic testing.
-- **Risk transfer:** Evaluate the proposed managed-backup service to address the limitations of same-host recovery.
-- **Risk acceptance:** Temporarily accept plain HTTP only under the conditions documented in Step 11, pending TLS deployment or risk reassessment.
+**GRC Significance:** Centralized monitoring strengthens oversight and supports evidence-based governance. Its effectiveness still depends on appropriate access restrictions, log retention, time synchronization and protection of monitoring records from unauthorized alteration.
 
-The $440 illustrative financial net benefit applies only to the separate Option B backup scenario. It must not be treated as verified savings or combined with unquantified benefits from other controls. 【1-138756】
+---
 
-## 12.5 Step 12 Conclusion
+## 4. Compliance Mapping
 
-The cost-benefit and residual risk assessment demonstrates that Northbridge Services can adopt a combination of hardening, managed backup and TLS deployment at a fictional combined first-year cost of $610. 【1-138756】
+Many regulations (like SOX, PCI DSS, HIPAA) require monitoring critical files for changes.
 
-The illustrative managed-backup scenario produces a baseline ALE of $1,000, residual ALE of $200, annual expected benefit of $800 and first-year net benefit of $440. These values depend on classroom assumptions and have not been established through observed financial outcomes. 【1-138756】
+### 4.1 How does a tool like Wazuh provide evidence for compliance audits?
 
-The residual risk reassessment indicates that the implemented controls have reduced exposure associated with the retired legacy service, archive disclosure and unauthorised network access. However, the loss-of-portal-content risk remains dependent on backup architecture limitations and recovery assurance evidence. 【1-138756】
+Wazuh provides technical evidence that can help organizations demonstrate the implementation and operation of security monitoring controls.
 
-Further treatment should prioritise separately protected recovery arrangements, completion of outstanding control-validation evidence, TLS implementation where required and continuous monitoring. 【1-138756】
+Through File Integrity Monitoring, Wazuh records changes to monitored files and generates alerts containing information such as:
 
-**Calculation workbook:** GRC103_Week 3 Practical Lab Technical Risk Treatment - Implementing and Validating Security Controls_C11-26-CGRCE-17566_Venesha_Ochieng.xlsx 【1-138756】
+- Monitored agent name and identification number.
+- Affected file name and path.
+- File change type: added, modified or deleted.
+- Event timestamp.
+- Detection rule ID and severity level.
+- File checksums before and after modifications, when available.
 
-### Technical References
+This information helps auditors evaluate whether file integrity controls are implemented and whether suspicious changes are detected.
 
-- Ubuntu Server Firewall Documentation: https://ubuntu.com/server/docs/firewalls/
-- NGINX Directory Listing: https://nginx.org/en/docs/http/ngx_http_autoindex_module.html
-- NGINX Access Logging: https://nginx.org/en/docs/http/ngx_http_log_module.html
-- Course Basis: ICDFA Risk Treatment Strategies slides, GRC103 Module 3.
+#### Relevant Compliance Frameworks
+
+| Framework | Relevant Requirement or Principle | How Wazuh Supports It |
+|-----------|----------------------------------|----------------------|
+| SOX | Internal controls supporting reliable financial reporting | Provides change-monitoring evidence for systems containing financially significant information |
+| PCI DSS 4.0 | Requirement 11.5.2 - Change-detection mechanisms for critical files | Helps identify unauthorized changes to monitored critical files |
+| HIPAA Security Rule | Audit controls and integrity safeguards, where applicable | Supports monitoring and investigation of changes to electronic protected health information |
+| ISO/IEC 27001:2022 | Annex A 8.15 - Logging and 8.16 - Monitoring activities | Supports collection, review and analysis of security events |
+| NIST CSF 2.0 | DE.CM - Continuous Monitoring | Supports detection and monitoring of relevant endpoint events |
+
+Wazuh evidence contributes to compliance assessments but does not independently establish full compliance with any regulation or framework.
+
+---
+
+### 4.2 Briefly describe how you would use the Wazuh dashboard to demonstrate to an auditor that a specific sensitive file has not been altered during a defined period (e.g., last quarter).
+
+#### Step 1 - Identify the Sensitive File
+
+Select the monitored financial document:
+
+```text
+C:\Users\Venesha\SensitiveFiles\Q4_Financial_Forecast.docx
+```
+
+Confirm that the Windows workstation was monitored by the Wazuh Agent throughout the period under review.
+
+#### Step 2 - Establish the Audit Period
+
+Set the Wazuh Dashboard time range to the relevant quarter, for example **1 July to 30 September 2026**.
+
+#### Step 3 - Filter File Integrity Events
+
+Navigate to **Threat Hunting** or **File Integrity Monitoring** and apply a filter for File Integrity Monitoring events, such as:
+
+```text
+rule.groups: "syscheck"
+```
+
+Then narrow the results to the specified agent and financial document path.
+
+#### Step 4 - Review the Monitoring History
+
+Review any alerts indicating file creation, modification, checksum changes or deletion.
+
+If there are no relevant alerts, investigate whether monitoring was continuously enabled and whether event collection and retention covered the entire quarter.
+
+#### Step 5 - Verify File Integrity
+
+Compare the file's current cryptographic checksum with its approved baseline checksum, if available.
+
+Matching checksums provide evidence that the contents have not changed relative to the baseline, subject to the integrity of the hashing process and records.
+
+#### Step 6 - Export Audit Evidence
+
+Prepare an audit evidence package containing:
+
+- File Integrity Monitoring configuration and monitored directory.
+- Agent status and monitoring coverage for the audit period.
+- Baseline and current checksum comparison.
+- Relevant Wazuh event records or search results.
+- Evidence of log retention and investigation of any monitoring gaps.
+
+#### Step 7 - Document the Conclusion
+
+If the baseline and current hashes match, no unauthorized changes are identified, and monitoring coverage is demonstrated throughout the quarter, the evidence supports a conclusion that the file's integrity was maintained during the period under review.
+
+However, the absence of Wazuh alerts alone does not prove that a file was never altered. Monitoring gaps, missing records or temporary changes subsequently reversed must be considered.
+
+---
+
+# Conclusion
+
+The GRC103 Wazuh practical exercise demonstrated how technical security monitoring can support organizational risk management.
+
+The Wazuh Manager was deployed on an Ubuntu virtual machine, and the Windows workstation was registered as Agent 004. File Integrity Monitoring was configured to detect changes within the **SensitiveFiles** directory.
+
+The Threat Hunting dashboard displayed file creation, integrity checksum modification and deletion alerts, corresponding to Wazuh Rules **554**, **550** and **553**.
+
+These observations demonstrate that Wazuh is generating file-integrity events. Confirmation that all three alerts correspond specifically to **Q4_Financial_Forecast.docx** requires inspection of the individual event file paths.
+
+From a GRC perspective, the exercise demonstrates the importance of combining preventive access controls, detective monitoring and corrective incident response procedures.
+
+Wazuh provides a practical mechanism for monitoring sensitive files, supporting audit evidence collection and improving visibility into information integrity risks.
