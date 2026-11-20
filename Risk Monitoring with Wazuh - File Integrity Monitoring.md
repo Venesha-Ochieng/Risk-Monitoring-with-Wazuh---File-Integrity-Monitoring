@@ -117,7 +117,7 @@ sudo /var/ossec/bin/manage_agents
 3. Paste the key into the **Agent key** field.
 4. In the **Manager address** field, enter the IP address of your **Ubuntu VM**.
 5. Click **Apply** and then **Restart**.
-![Step 4.2](4.2..png)
+![Step 4.2](4.2.png)
 
 ### Verification
 
@@ -126,7 +126,7 @@ Go to the **Wazuh Dashboard** → **Agents**.
 You should soon see your agent with a green **Active** status.
 ![Step 4.2.](4.2..png)
 
-![Step 4.2..](4.2..png)
+![Step 4.2..](4.2...png)
 
 # Part 5: Implementing a Detective Control (File Integrity Monitoring)
 
